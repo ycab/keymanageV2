@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" id="mainframebody"xmlns:th="http://thymeleaf.org">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>Dashboard - Ace Admin</title>
+
+		<meta name="description" content="overview &amp; stats" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/assets/font-awesome/4.5.0/css/font-awesome.min.css}" />
+
+		<!-- page specific plugin styles -->
+
+		<!-- text fonts -->
+		<link rel="stylesheet" th:href="@{/assets/css/fonts.googleapis.com.css}" />
+
+		<!-- ace styles -->
+		<link rel="stylesheet" th:href="@{/assets/css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
+
+		<!--[if lte IE 9]>
+		<link rel="stylesheet" th:href="@{/assets/css/ace-part2.min.css}" class="ace-main-stylesheet"/>
+		<![endif]-->
+		<link rel="stylesheet" th:href="@{/assets/css/ace-skins.min.css}" />
+		<link rel="stylesheet" th:href="@{/assets/css/ace-rtl.min.css}" />
+
+		<!--[if lte IE 9]>
+		<link rel="stylesheet" th:href="@{/assets/css/ace-ie.min.css}"/>
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+		<script th:src="@{/assets/js/ace-extra.min.js}"></script>
+
+		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+		<!--[if lte IE 8]>
+		<script th:src="@{/assets/js/html5shiv.min.js}"></script>
+		<script th:src="@{/assets/js/respond.min.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body class="no-skin">
+		<div id="navbar" class="navbar navbar-default          ace-save-state">
+			<div class="navbar-container ace-save-state" id="navbar-container">
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<div class="navbar-header pull-left">
+					<a href="index.html" class="navbar-brand">
+						<small>
+							<i class="fa fa-leaf"></i>
+							物品管理平台
+						</small>
+					</a>
+				</div>
+
+				<div class="navbar-buttons navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+
+						<li class="light-blue dropdown-modal">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<img class="nav-user-photo" src="/assets/images/avatars/user.jpg" alt="Jason's Photo" />
+								<input type="hidden" th:value="${authority}" id="authority"/>
+								<span class="user-info">
+									<small>欢迎</small>
+									<span id="test"></span>
+								</span>
+
+								<i class="ace-icon fa fa-caret-down"></i>
+							</a>
+
+							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a href="#">
+										<i class="ace-icon fa fa-cog"></i>
+										Settings
+									</a>
+								</li>
+
+								<li>
+									<a href="profile.html">
+										<i class="ace-icon fa fa-user"></i>
+										Profile
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="#">
+										<i class="ace-icon fa fa-power-off"></i>
+										Logout
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<div class="main-container ace-save-state" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.loadState('main-container')}catch(e){}
+			</script>
+
+			<div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+				<script type="text/javascript">
+					try{ace.settings.loadState('sidebar')}catch(e){}
+				</script>
+
+				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+						<button class="btn btn-success">
+							<i class="ace-icon fa fa-signal"></i>
+						</button>
+
+						<button class="btn btn-info">
+							<i class="ace-icon fa fa-pencil"></i>
+						</button>
+
+						<button class="btn btn-warning">
+							<i class="ace-icon fa fa-users"></i>
+						</button>
+
+						<button class="btn btn-danger">
+							<i class="ace-icon fa fa-cogs"></i>
+						</button>
+					</div>
+
+					<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+						<span class="btn btn-success"></span>
+
+						<span class="btn btn-info"></span>
+
+						<span class="btn btn-warning"></span>
+
+						<span class="btn btn-danger"></span>
+					</div>
+				</div><!-- /.sidebar-shortcuts -->
+
+				<ul class="nav nav-list">
+
+					<!--超级管理员分配-->
+					<li id="supermanage">
+						<a href="#" data-iframe="supermanage" onclick="changePage(this)">
+							<i class="menu-icon fa fa-tachometer"></i>
+							<span class="menu-text">超级管理员配置</span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+					<!--柜子管理-->
+					<li id="cabinet">
+						<a href="#" data-iframe="cabinet" onclick="changePage(this)">
+							<i class="menu-icon fa fa-desktop"></i>
+							<span class="menu-text">柜子管理</span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+					<!--人员管理-->
+					<li id="peopleManage" class="">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa  fa-users"></i>
+							<span class="menu-text">人员管理</span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+
+							<li id="editpwd" class="">
+								<a href="#" data-iframe="usercodemanage" onclick="changePage(this)">
+									<i class="menu-icon fa fa-caret-right"></i>
+									修改密码
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li id="managerManage" class="">
+								<a href="#" data-iframe="manager" onclick="changePage(this)">
+									<i class="menu-icon fa fa-caret-right"></i>
+									管理员管理
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li id="userManage" class="">
+								<a href="#" data-iframe="user" onclick="changePage(this)">
+									<i class="menu-icon fa fa-caret-right"></i>
+									用户管理
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+							<li id="userapply" class="">
+								<a href="#" data-iframe="userapply" onclick="changePage(this)">
+									<i class="menu-icon fa fa-caret-right"></i>
+									人员审批
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+						</ul>
+					</li>
+
+					<!--物品管理-->
+					<li id="goodsmanage"class="">
+						<a href="#" data-iframe="goodsmanage" onclick="changePage(this)"class="dropdown-toggle">
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> 物品管理 </span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+					<!--物品审批-->
+					<li id="goodsapply"class="">
+						<a href="#" data-iframe="goodsapply" onclick="changePage(this)" class="dropdown-toggle">
+							<i class="menu-icon fa fa-pencil-square-o"></i>
+							<span class="menu-text"> 物品审批 </span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+					<!--异常通知-->
+					<li id="error" class="">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-comment-o  bigger-130"></i>
+							<span class="menu-text"> 异常通知</span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+					<!--记录查询-->
+					<li id="record" class="">
+						<a href="#" data-iframe="record" onclick="changePage(this)" class="dropdown-toggle">
+							<i class="menu-icon  glyphicon glyphicon-search"></i>
+							<span class="menu-text"> 记录查询</span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+
+				</ul>
+
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+			</div>
+
+			<div class="main-content">
+				<div class="main-content-inner">
+					<div class="page-content">
+						<div class="ace-settings-container" id="ace-settings-container">
+							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+								<i class="ace-icon fa fa-cog bigger-130"></i>
+							</div>
+
+							<div class="ace-settings-box clearfix" id="ace-settings-box">
+								<div class="pull-left width-50">
+									<div class="ace-settings-item">
+										<div class="pull-left">
+											<select id="skin-colorpicker" class="hide">
+												<option data-skin="no-skin" value="#438EB9">#438EB9</option>
+												<option data-skin="skin-1" value="#222A2D">#222A2D</option>
+												<option data-skin="skin-2" value="#C6487E">#C6487E</option>
+												<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+											</select>
+										</div>
+										<span>&nbsp;皮肤选择</span>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-navbar" autocomplete="off" />
+										<label class="lbl" for="ace-settings-navbar"> 固定导航栏</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-sidebar" autocomplete="off" />
+										<label class="lbl" for="ace-settings-sidebar">固定侧边栏</label>
+									</div>
+
+								</div><!-- /.pull-left -->
+
+								<div class="pull-left width-50">
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" autocomplete="off" />
+										<label class="lbl" for="ace-settings-hover"> 子菜单浮空 </label>
+									</div>
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-add-container" autocomplete="off" />
+										<label class="lbl" for="ace-settings-add-container">
+											显示风格切换
+										</label>
+									</div>
+
+								</div><!-- /.pull-left -->
+							</div><!-- /.ace-settings-box -->
+						</div>
+						<iframe id="mainframe" src='https://www.baidu.com/' scrolling="no" marginheight="0" marginwidth="0" frameborder="0"
+								width="100%"></iframe>
+					</div><!-- /.page-content -->
+				</div>
+			</div><!-- /.main-content -->
+			<div class="footer">
+				<div class="footer-inner">
+					<div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Ace</span>
+							Application &copy; 2013-2014
+						</span>
+
+						&nbsp; &nbsp;
+						<span class="action-buttons">
+							<a href="#">
+								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+							</a>
+
+							<a href="#">
+								<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+							</a>
+
+							<a href="#">
+								<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+							</a>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<script th:src="@{/assets/js/jquery-2.1.4.min.js}"></script>
+
+		<!-- <![endif]-->
+		<!--[if IE]>
+		<script th:src="@{/assets/js/jquery-1.11.3.min.js}"></script>
+		<![endif]-->
+
+		<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+		<!-- page specific plugin scripts -->
+		<!--[if lte IE 8]>
+		<script th:src="@{/assets/js/excanvas.min.js}"></script>
+		<![endif]-->
+		<script th:src="@{/assets/js/jquery-ui.custom.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.ui.touch-punch.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.easypiechart.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.sparkline.index.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.flot.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.flot.pie.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.flot.resize.min.js}"></script>
+
+		<!-- ace scripts -->
+		<script th:src="@{/assets/js/ace-elements.min.js}"></script>
+		<script th:src="@{/assets/js/ace.min.js}"></script>
+
+		<!-- page specific plugin scripts -->
+		<script th:src="@{/assets/js/bootstrap-datepicker.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.jqGrid.min.js}"></script>
+		<script th:src="@{/assets/js/grid.locale-cn.js}"></script>
+		<!-- ace scripts -->
+		<script th:src="@{/assets/js/ace-elements.min.js}"></script>
+		<script th:src="@{/assets/js/ace.min.js}"></script>
+		<script type="text/javascript">
+            jQuery(function ($) {
+                var mainframebody = document.getElementById('mainframebody');
+                var height = mainframebody.offsetHeight - $("#navbar").height()  - $("#footnavbar").height();
+                $("#mainframe").height(height);
+
+            });
+            var authority=$("#authority").val();
+            document.getElementById("test").innerText = authority;
+            document.getElementById("supermanage").style.display = "none";
+            document.getElementById("cabinet").style.display = "none";
+            document.getElementById("peopleManage").style.display = "none";
+            document.getElementById("editpwd").style.display = "none";
+            document.getElementById("managerManage").style.display = "none";
+            document.getElementById("userManage").style.display = "none";
+            document.getElementById("userapply").style.display = "none";
+            document.getElementById("goodsmanage").style.display = "none";
+            document.getElementById("goodsapply").style.display = "none";
+            document.getElementById("error").style.display = "none";
+            if(authority=="root")
+			{
+                var test = document.getElementById("mainframe");
+                test.src = "[[@{/home/supermanage}]]";
+                document.getElementById("supermanage").style.display = "inline";
+                document.getElementById("cabinet").style.display = "inline";
+			}
+			else if(authority=="超级管理员")
+			{
+                var test = document.getElementById("mainframe");
+                test.src ="[[@{/home/usercodemanage}]]";
+                document.getElementById("peopleManage").style.display = "inline";
+                document.getElementById("editpwd").style.display = "inline";
+                document.getElementById("managerManage").style.display = "inline";
+                document.getElementById("userManage").style.display = "inline";
+                document.getElementById("userapply").style.display = "inline";
+                document.getElementById("goodsmanage").style.display = "inline";
+                document.getElementById("goodsapply").style.display = "inline";
+                document.getElementById("error").style.display = "inline";
+			}
+            else if(authority=="管理员")
+            {
+                var test = document.getElementById("mainframe");
+                test.src = "[[@{/home/usercodemanage}]]";
+                document.getElementById("peopleManage").style.display = "inline";
+                document.getElementById("editpwd").style.display = "inline";
+                document.getElementById("goodsmanage").style.display = "inline";
+                document.getElementById("goodsapply").style.display = "inline";
+                document.getElementById("error").style.display = "inline";
+            }
+            function changePage(obj) {
+
+                var test = document.getElementById("mainframe");
+                var itemName = obj.getAttribute("data-iframe");
+
+
+                if (itemName == "supermanage") {
+                    test.src = "[[@{/home/supermanage}]]";
+                }
+                else if (itemName == "cabinet") {
+                    test.src = "[[@{/home/cabinet}]]";
+                }
+                else if (itemName == "usercodemanage") {
+                    test.src ="[[@{/home/usercodemanage}]]";
+                }
+                else if (itemName == "user") {
+                    test.src ="[[@{/home/user}]]";
+                } else if (itemName == "manager") {
+                    test.src = "[[@{/home/manager}]]";
+                } else if (itemName == "userapply") {
+                    test.src ="[[@{/home/userapply}]]";
+                }
+                else if (itemName == "goodsmanage") {
+                    test.src = "[[@{/home/cabinetforgoods}]]";
+                } else if (itemName == "goodsapply") {
+                    test.src = "[[@{/home/goodsapply}]]";
+                } else if (itemName == "record") {
+                    test.src ="[[@{/home/record}]]";
+                }
+                else if (itemName == "robotsub1") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=robotsub1")';
+                }
+                else if (itemName == "robotsub2") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=robotsub2")';
+                }
+                else if (itemName == "robotsub3") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=robotsub3")';
+                }
+                else if (itemName == "3Dsub1") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=3Dsub1")';
+                }
+                else if (itemName == "3Dsub2") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=3Dsub2")';
+                }
+                else if (itemName == "3Dsub3") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=3Dsub3")';
+                }
+                else if (itemName == "CNCsub1") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=CNCsub1")';
+                }
+                else if (itemName == "CNCsub2") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=CNCsub2")';
+                }
+                else if (itemName == "CNCsub3") {
+                    test.src = '@Url.Content("~/Rank/GetRankBySSZL?SSZL=CNCsub3")';
+                }
+            }
+		</script>
+	</body>
+</html>
